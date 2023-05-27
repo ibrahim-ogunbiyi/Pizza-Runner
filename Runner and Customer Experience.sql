@@ -1,6 +1,6 @@
+/* Runner and Customer Experience  Geek*/
+
 -- 1. How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)
-
-
 SELECT 
 	FLOOR((registration_date - '2021-01-01'::date) / 7) + 1 AS week,
 	COUNT(runner_id) AS no_of_registration
