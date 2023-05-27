@@ -82,13 +82,16 @@ USING(order_id);
 -- for extras and each runner is paid $0.30 per kilometre traveled - 
  -- how much money does Pizza Runner have left over after these deliveries?
  
+SELECT SUM(pizza_cost) -  SUM(duration_cost) As total_profit
+FROM(
 SELECT
-	(SUM(CASE WHEN pizza_id = 1 THEN 12 ELSE 10 END)
-	- SUM(DISTINCT duration::NUMERIC) * 0.30)
+	order_id, 
+	SUM(CASE WHEN pizza_id = 1 THEN 12 ELSE 10 END) As pizza_cost,
+	SUM(DISTINCT r.duration::NUMERIC) * 0.30 AS duration_cost
 FROM pizza_runner.customer_orders AS c
-INNER JOIN pizza_runner.runner_orders
+INNER JOIN pizza_runner.runner_orders AS r
 USING(order_id)
 WHERE cancellation IS NULL
-GROUP BY order_id;
+GROUP BY order_id
+) AS result;
 
-	
